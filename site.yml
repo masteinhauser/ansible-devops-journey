@@ -1,0 +1,7 @@
+---
+- name: is this thing on?
+  hosts: all
+  tasks:
+    - command: uname -a
+      register: uname
+    - debug: var=uname

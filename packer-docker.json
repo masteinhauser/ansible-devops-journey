@@ -1,0 +1,25 @@
+{
+  "builders": [
+    {
+      "type": "docker",
+      "image": "ubuntu:14.04",
+      "commit": true,
+      "pull": true
+    }
+  ],
+
+  "provisioners": [
+    {
+        "type": "shell",
+        "inline": [
+            "apt-get -y update",
+            "apt-get install -y python-pip python-dev",
+            "pip install ansible"
+        ]
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "./site.yml"
+    }
+  ]
+}
