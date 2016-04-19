@@ -6,7 +6,7 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure(2) do |config|
-  config.vm.define "cs1" do |machine|
+  config.vm.define "cs01" do |machine|
     # The most common machineuration options are documented and commented below.
     # For a complete reference, please see the online documentation at
     # https://docs.vagrantup.com.
@@ -55,31 +55,14 @@ Vagrant.configure(2) do |config|
     # View the documentation for the provider you are using for more
     # information on available options.
 
-#    # Install pre-reqs and ansible
-#    $script = <<SCRIPT
-#      apt-get -y update
-#      apt-get install -y python-pip python-dev
-#      pip install ansible
-#      ansible --version
-#SCRIPT
-#    machine.vm.provision "shell", inline: $script
-
-    $script = <<SCRIPT
-      apt-get update -y -qq
-      apt-get install -y -qq software-properties-common python-software-properties
-      add-apt-repository ppa:ansible/ansible -y
-      apt-get update -y -qq
-      apt-get install -y -qq ansible
-SCRIPT
-    machine.vm.provision "shell", inline: $script
-
     #
     # Run Ansible in the Vagrant VM (not from the host)
     #
     machine.vm.provision "ansible_local" do |ansible|
-      ansible.install = true
-      ansible.playbook = "site.yml"
-      ansible.inventory_path = "hosts"
+      ansible.install        = true
+      ansible.verbose        = true
+      ansible.playbook       = "site.yml"
+      ansible.inventory_path = "example"
     end
   end
 end
