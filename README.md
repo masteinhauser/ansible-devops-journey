@@ -5,12 +5,17 @@ $ pip install vex
 
 ### create virtualenv to work in
 ```
-$ vex -m adj
+$ vex -m doj
 ```
 
-### install ansible
+### install ansible (and other project deps)
 ```
 $ pip install -r requirements.txt
+```
+
+### install ansible roles
+```
+ansible-galaxy install -r roles.yml
 ```
 
 ### install Docker Toolbox

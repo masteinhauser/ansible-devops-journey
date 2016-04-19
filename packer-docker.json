@@ -21,5 +21,16 @@
       "type": "ansible-local",
       "playbook_file": "./site.yml"
     }
+  ],
+
+  "post-processors": [
+    [
+      {
+        "type": "docker-tag",
+        "repository": "masteinhauser/ansible-devops-journey",
+        "tag": "ansible-local"
+      },
+      "docker-push"
+    ]
   ]
 }

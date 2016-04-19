@@ -5,3 +5,8 @@
     - command: uname -a
       register: uname
     - debug: var=uname
+
+- name: install nginx
+  hosts: chatsrv
+  roles:
+    - nginx
