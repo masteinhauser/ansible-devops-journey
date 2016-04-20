@@ -1,0 +1,54 @@
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "ami_name": "ansible-devops-journey-{{ timestamp }}",
+      "source_ami": "ami-84584eee",
+      "ssh_username": "ubuntu",
+      "instance_type": "t1.micro",
+      "region": "us-east-1",
+      "user_data_file": "example/packer-amazon-ebs/user-data.json"
+    }
+  ],
+
+  "provisioners": [
+    {
+        "type": "shell",
+        "execute_command": "echo 'packer' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+        "inline": [
+            "cat /etc/apt/sources.list",
+            "apt-get install -y python-dev python-pip",
+            "pip install ansible",
+            "mkdir /tmp/packer-provisioner-ansible-local && chmod 777 /tmp/packer-provisioner-ansible-local"
+        ]
+    },
+    {
+        "type": "file",
+        "source": "simple-chat/simple-chat-ec2.tar.gz",
+        "destination": "/tmp/simple-chat-ec2.tar.gz"
+    },
+    {
+        "type": "file",
+        "source": "ansible.cfg",
+        "destination": "/tmp/packer-provisioner-ansible-local/ansible.cfg"
+    },
+    {
+      "type": "ansible-local",
+      "command": "sudo ansible-playbook",
+      "extra_arguments": [
+        "-vvv",
+        "--limit cs01"
+      ],
+      "playbook_file": "site.yml",
+      "inventory_file": "example/packer-amazon-ebs/hosts",
+      "group_vars": "example/packer-amazon-ebs/group_vars",
+      "role_paths": [
+        "roles/nginx",
+        "roles/simple-chat"
+      ]
+    }
+  ],
+
+  "post-processors": [
+  ]
+}

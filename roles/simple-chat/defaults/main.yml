@@ -2,7 +2,6 @@
 simplechat:
   home: /opt/simple-chat/
   install:
-    source: /vagrant/simple-chat/simple-chat
-    dest: /opt/simple-chat/bin/simple-chat
-    symlink: /usr/local/bin/simple-chat
-    synchronize: true
+    source: /vagrant/simple-chat/simple-chat.tar.gz
+    dest: /opt/simple-chat
+    binary: simple-chat
