@@ -27,7 +27,7 @@ Vagrant.configure(2) do |config|
 
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
-    machine.vm.network "private_network", ip: "172.0.0.11"
+    machine.vm.network "private_network", ip: "172.16.0.11"
 
     # Create a public network, which generally matched to bridged network.
     # Bridged networks make the machine appear as another physical device on
@@ -62,7 +62,7 @@ Vagrant.configure(2) do |config|
       ansible.install        = true
       ansible.verbose        = true
       ansible.playbook       = "site.yml"
-      ansible.inventory_path = "example"
+      ansible.inventory_path = "example/vagrant"
     end
   end
 end

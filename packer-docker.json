@@ -14,12 +14,34 @@
         "inline": [
             "apt-get -y update",
             "apt-get install -y python-pip python-dev",
-            "pip install ansible"
+            "pip install ansible",
+            "mkdir /tmp/packer-provisioner-ansible-local"
         ]
     },
     {
+        "type": "file",
+        "source": "simple-chat/simple-chat",
+        "destination": "/tmp/simple-chat"
+    },
+    {
+        "type": "file",
+        "source": "ansible.cfg",
+        "destination": "/tmp/packer-provisioner-ansible-local/ansible.cfg"
+    },
+    {
       "type": "ansible-local",
-      "playbook_file": "./site.yml"
+      "command": "ansible-playbook",
+      "extra_arguments": [
+        "-vvv",
+        "--limit cs01"
+      ],
+      "playbook_file": "site.yml",
+      "inventory_file": "example/packer-docker/hosts",
+      "group_vars": "example/packer-docker/group_vars",
+      "role_paths": [
+        "roles/nginx",
+        "roles/simple-chat"
+      ]
     }
   ],
 
