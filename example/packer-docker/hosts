@@ -1,0 +1,4 @@
+cs01   ansible_connection=local
+
+[chatsrv]
+cs01

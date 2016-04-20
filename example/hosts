@@ -1,4 +1,0 @@
-cs01   ansible_ssh_host=172.0.0.11 ansible_ssh_user='vagrant' ansible_become=true ansible_ssh_private_key_file=/vagrant/.vagrant/machines/cs01/virtualbox/private_key
-
-[chatsrv]
-cs01

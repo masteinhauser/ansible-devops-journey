@@ -1,0 +1,51 @@
+---
+- name: install deps
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - rsync
+
+- name: create simple-chat user
+  user:
+    name: simple-chat
+    home: "{{ simplechat.home }}"
+    system: yes
+
+- name: create simple-chat install dir
+  file:
+    path: "{{ simplechat.install.dest | regex_replace('(.*\\/).*', '\\1') }}"
+    state: directory
+    owner: simple-chat
+    group: simple-chat
+
+- name: install simple-chat binary
+  synchronize:
+    src: "{{ simplechat.install.source }}"
+    dest: "{{ simplechat.install.dest }}"
+  when: simplechat.install.synchronize|bool
+  notify:
+    - restart simple-chat
+
+- name: symlink simple-chat binary
+  file:
+    src: "{{ simplechat.install.dest }}"
+    dest: "{{ simplechat.install.symlink }}"
+    state: link
+  when: simplechat.install.symlink
+  notify:
+    - restart simple-chat
+
+- name: install simple-chat service
+  template:
+    src: etc/init/simple-chat.conf
+    dest: /etc/init/simple-chat.conf
+  notify:
+    - restart simple-chat
+
+- meta: flush_handlers
+
+- name: start simple-chat service
+  service:
+    name: simple-chat
+    enabled: yes
+    state: started

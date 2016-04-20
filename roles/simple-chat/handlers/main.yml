@@ -1,0 +1,5 @@
+---
+- name: restart simple-chat
+  service:
+    name: simple-chat
+    state: restarted

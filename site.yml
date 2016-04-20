@@ -6,7 +6,8 @@
       register: uname
     - debug: var=uname
 
-- name: install nginx
+- name: build chat server
   hosts: chatsrv
   roles:
     - nginx
+    - simple-chat
