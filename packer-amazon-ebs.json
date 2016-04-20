@@ -2,22 +2,24 @@
   "builders": [
     {
       "type": "amazon-ebs",
-      "ami_name": "ansible-devops-journey-{{ timestamp }}"
+      "ami_name": "ansible-devops-journey-{{ timestamp }}",
       "source_ami": "ami-84584eee",
       "ssh_username": "ubuntu",
-      "instance_type": "m1.small",
-      "region": "us-east-1"
+      "instance_type": "t1.micro",
+      "region": "us-east-1",
+      "user_data_file": "example/packer-amazon-ebs/user-data.json"
     }
   ],
 
   "provisioners": [
     {
         "type": "shell",
+        "execute_command": "echo 'packer' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
         "inline": [
-            "apt-get -y update",
-            "apt-get install -y python-pip python-dev",
+            "cat /etc/apt/sources.list",
+            "apt-get install -y python-dev python-pip",
             "pip install ansible",
-            "mkdir /tmp/packer-provisioner-ansible-local"
+            "mkdir /tmp/packer-provisioner-ansible-local && chmod 777 /tmp/packer-provisioner-ansible-local"
         ]
     },
     {
@@ -32,7 +34,7 @@
     },
     {
       "type": "ansible-local",
-      "command": "ansible-playbook",
+      "command": "sudo ansible-playbook",
       "extra_arguments": [
         "-vvv",
         "--limit cs01"
