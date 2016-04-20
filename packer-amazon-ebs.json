@@ -1,0 +1,52 @@
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "ami_name": "ansible-devops-journey-{{ timestamp }}"
+      "source_ami": "ami-84584eee",
+      "ssh_username": "ubuntu",
+      "instance_type": "m1.small",
+      "region": "us-east-1"
+    }
+  ],
+
+  "provisioners": [
+    {
+        "type": "shell",
+        "inline": [
+            "apt-get -y update",
+            "apt-get install -y python-pip python-dev",
+            "pip install ansible",
+            "mkdir /tmp/packer-provisioner-ansible-local"
+        ]
+    },
+    {
+        "type": "file",
+        "source": "simple-chat/simple-chat",
+        "destination": "/tmp/simple-chat"
+    },
+    {
+        "type": "file",
+        "source": "ansible.cfg",
+        "destination": "/tmp/packer-provisioner-ansible-local/ansible.cfg"
+    },
+    {
+      "type": "ansible-local",
+      "command": "ansible-playbook",
+      "extra_arguments": [
+        "-vvv",
+        "--limit cs01"
+      ],
+      "playbook_file": "site.yml",
+      "inventory_file": "example/packer-amazon-ebs/hosts",
+      "group_vars": "example/packer-amazon-ebs/group_vars",
+      "role_paths": [
+        "roles/nginx",
+        "roles/simple-chat"
+      ]
+    }
+  ],
+
+  "post-processors": [
+  ]
+}
