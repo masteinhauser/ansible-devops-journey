@@ -24,8 +24,8 @@
     },
     {
         "type": "file",
-        "source": "simple-chat/simple-chat",
-        "destination": "/tmp/simple-chat"
+        "source": "simple-chat/simple-chat-ec2.tar.gz",
+        "destination": "/tmp/simple-chat-ec2.tar.gz"
     },
     {
         "type": "file",

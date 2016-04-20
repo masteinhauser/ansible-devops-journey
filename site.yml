@@ -5,9 +5,15 @@
     - command: uname -a
       register: uname
     - debug: var=uname
+  tags:
+    - always
 
 - name: build chat server
   hosts: chatsrv
   roles:
-    - nginx
-    - simple-chat
+    - role: nginx
+      tags:
+        - nginx
+    - role: simple-chat
+      tags:
+        - simple-chat

@@ -1,3 +1,5 @@
+# DEVELOPMENT
+
 ### install vex
 ```
 $ pip install vex
@@ -17,6 +19,15 @@ $ pip install -r requirements.txt
 ```
 ansible-galaxy install -r roles.yml
 ```
+
+# PRODUCTION: AWS
+
+### build your ami
+```
+packer build packer-amazon-ebs.json
+```
+
+# PRODUCTION: DOCKER (DOCKERDOCKERDOCKER)
 
 ### install Docker Toolbox
 ### https://docs.docker.com/engine/installation/mac/

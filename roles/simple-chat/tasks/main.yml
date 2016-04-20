@@ -18,24 +18,30 @@
     owner: simple-chat
     group: simple-chat
 
-- name: install simple-chat binary
-  synchronize:
+- name: extract simple-chat
+  unarchive:
     src: "{{ simplechat.install.source }}"
     dest: "{{ simplechat.install.dest }}"
-  when: simplechat.install.synchronize|bool
+    copy: no
   notify:
     - restart simple-chat
 
-- name: symlink simple-chat binary
+- name: fix perms simple-chat install dir
   file:
-    src: "{{ simplechat.install.dest }}"
-    dest: "{{ simplechat.install.symlink }}"
-    state: link
-  when: simplechat.install.symlink
-  notify:
-    - restart simple-chat
+    path: "{{ simplechat.install.dest | regex_replace('(.*\\/).*', '\\1') }}"
+    state: directory
+    owner: simple-chat
+    group: simple-chat
+    recurse: true
 
-- name: install simple-chat service
+- name: fix perms simple-chat binary
+  file:
+    path: "{{ simplechat.install.dest }}/{{ simplechat.install.binary }}"
+    owner: simple-chat
+    group: simple-chat
+    mode: 0755
+
+- name: install simple-chat upstart
   template:
     src: etc/init/simple-chat.conf
     dest: /etc/init/simple-chat.conf

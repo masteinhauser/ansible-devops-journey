@@ -23,5 +23,5 @@ nginx_configs:
 
 simplechat:
   install:
-    source: /tmp/simple-chat
-    synchronize: true
+    source: /tmp/simple-chat-ec2.tar.gz
+    binary: simple-chat-ec2
