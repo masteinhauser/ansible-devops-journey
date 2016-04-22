@@ -1,0 +1,51 @@
+{
+  "builders": [
+    {
+      "type": "digitalocean",
+      "api_token": "YOUR API KEY",
+      "image": "ubuntu-14-04-x64",
+      "region": "nyc2",
+      "size": "512mb"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+          "apt-get -y update",
+          "apt-get install -y python-pip python-dev",
+          "pip install ansible",
+          "mkdir /tmp/packer-provisioner-ansible-local"
+      ]
+    },
+    {
+        "type": "file",
+        "source": "simple-chat/simple-chat.tar.gz",
+        "destination": "/tmp/simple-chat.tar.gz"
+    },
+    {
+        "type": "file",
+        "source": "ansible.cfg",
+        "destination": "/tmp/packer-provisioner-ansible-local/ansible.cfg"
+    },
+    {
+      "type": "ansible-local",
+      "command": "sudo ansible-playbook",
+      "extra_arguments": [
+        "-vvv",
+        "--limit cs01"
+      ],
+      "playbook_file": "site.yml",
+      "inventory_file": "example/packer-digitalocean/hosts",
+      "group_vars": "example/packer-digitalocean/group_vars",
+      "role_paths": [
+        "roles/nginx",
+        "roles/simple-chat"
+      ]
+    }
+  ],
+
+  "post-processors": [
+  ]
+}
