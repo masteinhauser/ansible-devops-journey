@@ -1,4 +1,5 @@
 cs01   ansible_connection=local
+# cs01   ansible_ssh_host=<instance ip> ansible_ssh_user='ubuntu' ansible_become=true ansible_ssh_private_key_file=~/.ssh/id_<keypair private>
 
 [chatsrv]
 cs01
