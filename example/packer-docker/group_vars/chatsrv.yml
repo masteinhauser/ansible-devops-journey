@@ -30,5 +30,4 @@ nginx_configs:
 
 simplechat:
   install:
-    dest: /tmp/simple-chat
-    synchronize: false
+    source: /tmp/simple-chat.tar.gz
