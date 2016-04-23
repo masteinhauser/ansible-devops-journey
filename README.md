@@ -27,8 +27,8 @@ ansible-galaxy install -r roles.yml
 packer build packer-amazon-ebs.json
 ```
 
-# PRODUCTION: DOCKER (DOCKERDOCKERDOCKER)
 
+# DEVELOPMENT: DOCKER (DOCKERDOCKER)
 ### install Docker Toolbox
 ### https://docs.docker.com/engine/installation/mac/
 ```
@@ -60,7 +60,20 @@ Hello from Docker.
 This message shows that your installation appears to be working correctly.
 ```
 
+# PRODUCTION(-ish): DOCKER (DOCKERDOCKERDOCKER)
 ### build a docker container
 ```
 $ packer build packer-docker.json
+```
+
+### run the newly created image
+```
+docker run -p 80:80 -it masteinhauser/ansible-devops-journey /bin/bash -c "cd /opt/simple-chat/ && /opt/simple-chat/simple-chat & /usr/sbin/nginx
+```
+
+### check it's actually running and view the app
+```
+ip=$(docker-machine ip default)
+curl http://$ip
+echo "Open up your web browser to http://$ip to interact with the app!"
 ```
