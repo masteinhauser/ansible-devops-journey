@@ -1,10 +1,21 @@
 {
+  "variables": {
+    "file_simplechat_src": "simple-chat/simple-chat.tar.gz",
+    "file_simplechat_dest": "/tmp/simple-chat.tar.gz"
+  },
+
   "builders": [
     {
       "type": "docker",
       "image": "ubuntu:14.04",
       "commit": true,
       "pull": true
+    },
+    {
+      "type": "digitalocean",
+      "image": "ubuntu-14-04-x64",
+      "region": "nyc2",
+      "size": "512mb"
     }
   ],
 
@@ -20,8 +31,8 @@
     },
     {
         "type": "file",
-        "source": "simple-chat/simple-chat.tar.gz",
-        "destination": "/tmp/simple-chat.tar.gz"
+        "source": "{{user `file_simplechat_src`}}",
+        "destination": "{{user `file_simplechat_dest`}}"
     },
     {
         "type": "file",
@@ -32,12 +43,11 @@
       "type": "ansible-local",
       "command": "ansible-playbook",
       "extra_arguments": [
-        "-vvv",
-        "--limit cs01"
+        "-vvv"
       ],
       "playbook_file": "site.yml",
-      "inventory_file": "example/packer-docker/hosts",
-      "group_vars": "example/packer-docker/group_vars",
+      "inventory_groups": "chatsrv",
+      "group_vars": "example/packer/group_vars",
       "role_paths": [
         "roles/nginx",
         "roles/simple-chat"
@@ -49,6 +59,7 @@
     [
       {
         "type": "docker-tag",
+        "only": ["docker"],
         "repository": "masteinhauser/ansible-devops-journey",
         "tag": "latest"
       }
