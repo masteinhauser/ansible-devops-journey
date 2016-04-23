@@ -50,9 +50,8 @@
       {
         "type": "docker-tag",
         "repository": "masteinhauser/ansible-devops-journey",
-        "tag": "ansible-local"
-      },
-      "docker-push"
+        "tag": "latest"
+      }
     ]
   ]
 }
